@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">VestigeApp</string>
+    <string name="vestigeListItem">Quick Note</string>
+    <string name="vestigeStatusItemLabel">Status</string>
+    <string name="rdb_important">Important</string>
+    <string name="rdb_urgent">Urgent</string>
+    <string name="rdb_normal">Normal</string>
+    <string name="btn_save">Save Entry</string>
+    <string name="btn_update">Update Entry</string>
+</resources>
