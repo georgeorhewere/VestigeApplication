@@ -26,6 +26,11 @@ public interface VestigeDAO {
     @Query("SELECT * FROM vestige WHERE id = :id")
     LiveData<VestigeEntry> loadEntryById(int id);
 
+    @Query("SELECT * FROM vestige Order by status asc")
+    LiveData<List<VestigeEntry>> loadEntryByPriority();
+
+    @Query("SELECT * FROM vestige Order by modified_on desc")
+    LiveData<List<VestigeEntry>> loadEntryByUpdate();
 
 
 

@@ -2,6 +2,7 @@ package com.example.android.vestigeapp;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.Nullable;
@@ -14,7 +15,10 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.vestigeapp.database.VestigeDAO;
 import com.example.android.vestigeapp.database.VestigeDatabase;
@@ -79,21 +83,30 @@ private VestigeDatabase vestigeDb;
         });
 
         vestigeDb= VestigeDatabase.getInstance(getApplicationContext());
-        getJournalEntries();
+        getJournalEntries(getEntriesByDefault());
     }
 
-    private void getJournalEntries(){
-        final LiveData<List<VestigeEntry>> entries = vestigeDb.vestigeDAO().loadAllEntries();
+    private void getJournalEntries(LiveData<List<VestigeEntry>> entryList){
+        final LiveData<List<VestigeEntry>> entries = entryList;
         entries.observe(this, new Observer<List<VestigeEntry>>() {
             @Override
             public void onChanged(@Nullable List<VestigeEntry> vestigeEntries) {
                 vestigeListAdapter.setDbEntries(vestigeEntries);
             }
         });
-
-
-
     }
+
+    private LiveData<List<VestigeEntry>> getEntriesByPriority(){
+        return vestigeDb.vestigeDAO().loadEntryByPriority();
+    }
+    private LiveData<List<VestigeEntry>> getEntriesByUpdated(){
+        return vestigeDb.vestigeDAO().loadEntryByUpdate();
+    }
+    private LiveData<List<VestigeEntry>> getEntriesByDefault(){
+        return vestigeDb.vestigeDAO().loadAllEntries();
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -107,5 +120,31 @@ private VestigeDatabase vestigeDb;
         Intent intent = new Intent(MainActivity.this, AddEntry.class);
         intent.putExtra(AddEntry.EXTRA_ENTRY_ID, itemId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemSelected = item.getItemId();
+        Context context = MainActivity.this;
+
+        if(menuItemSelected == R.id.sortby_priority){
+            //Sort by Priority
+            getJournalEntries(getEntriesByPriority());
+
+        }else if(menuItemSelected == R.id.sortby_update){
+            //Sort by Updated On
+            getJournalEntries(getEntriesByUpdated());
+
+
+        }else{
+            getJournalEntries(getEntriesByDefault());
+        }
+        return true;
     }
 }

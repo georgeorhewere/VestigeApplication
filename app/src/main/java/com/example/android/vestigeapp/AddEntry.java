@@ -32,6 +32,7 @@ public class AddEntry extends AppCompatActivity {
     private Button saveButton;
     private VestigeDatabase entryDb;
     private int vestigeEntryId = DEFAULT_ENTRY_ID;
+    private Date originalCreatedDate = new Date();
 
     //Status codes for the priority
     public static final int STATUS_URGENT = 1;
@@ -57,6 +58,7 @@ public class AddEntry extends AppCompatActivity {
                 vestigeEntryId = intent.getIntExtra(EXTRA_ENTRY_ID, DEFAULT_ENTRY_ID);
 
                 final LiveData<VestigeEntry> entry = entryDb.vestigeDAO().loadEntryById(vestigeEntryId);
+                //originalCreatedDate = entry.getValue().getCreatedOn();
                 entry.observe(this, new Observer<VestigeEntry>() {
                     @Override
                     public void onChanged(@Nullable VestigeEntry vestigeEntry) {
@@ -103,6 +105,7 @@ public class AddEntry extends AppCompatActivity {
                } else {
                    //update entry
                    _entry.setId(vestigeEntryId);
+                   _entry.setCreatedOn(originalCreatedDate);
                    entryDb.vestigeDAO().updateEntry(_entry);
                }
 
@@ -117,6 +120,8 @@ public class AddEntry extends AppCompatActivity {
     public void updateUIFromEntry(VestigeEntry entry){
         textDescription.setText(entry.getDescription());
         setRadioButtonStatus(entry.getStatus());
+        if(entry.getCreatedOn() != null)
+            originalCreatedDate = entry.getCreatedOn();
 
     }
 

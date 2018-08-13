@@ -7,4 +7,8 @@
     <string name="rdb_normal">Normal</string>
     <string name="btn_save">Save Entry</string>
     <string name="btn_update">Update Entry</string>
+    <string name="list_sort">Sort</string>
+    <string name="priority_sort">Priority</string>
+    <string name="update_sort">Recent Update</string>
+    <string name="default_sort">Default</string>
 </resources>
