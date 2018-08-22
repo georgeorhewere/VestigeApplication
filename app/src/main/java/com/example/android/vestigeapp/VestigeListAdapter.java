@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.example.android.vestigeapp.database.VestigeEntry;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -71,17 +75,23 @@ final private ItemClickListener vItemClickListener;
     class VestigeItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
          TextView descriptionTextView;
          TextView statusTextView;
+         TextView dateTextView;
+         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         public VestigeItemViewHolder(View itemView) {
             super(itemView);
             descriptionTextView = (TextView) itemView.findViewById(R.id.rv_vestigeItem);
             statusTextView = (TextView) itemView.findViewById(R.id.rv_vestigePriority);
+            dateTextView = itemView.findViewById(R.id.rv_vestigeEntryDate);
             itemView.setOnClickListener(this);
         }
 
         void bind( VestigeEntry _entry){
             descriptionTextView.setText(_entry.getDescription());
             statusTextView.setText(getStatusText(_entry.getStatus()));
+            statusTextView.setTextColor(ContextCompat.getColor( context, getColorCode(_entry.getStatus())));
+            dateTextView.setText(formatter.format(_entry.getCreatedOn()));
+
 
         }
 
@@ -92,6 +102,24 @@ final private ItemClickListener vItemClickListener;
             vItemClickListener.onItemClickListener(elementId);
 
         }
+    }
+
+    public int getColorCode(int statusCode){
+        int colorCode = R.color.colorDefault;
+        switch(statusCode){
+            case 1:
+                colorCode = R.color.colorUrgent;
+                break;
+            case 2:
+                colorCode = R.color.colorImportant;
+                break;
+            case 3:
+                colorCode = R.color.colorDefault;
+                break;
+        }
+        Log.d("On Color ", "Color "+ colorCode);
+        return colorCode;
+
     }
 
 public String getStatusText(int statusCode){
