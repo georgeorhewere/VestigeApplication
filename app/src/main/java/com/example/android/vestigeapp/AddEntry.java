@@ -8,6 +8,8 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SearchEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +31,7 @@ public class AddEntry extends AppCompatActivity {
 
     //View Controls
     private EditText textDescription;
-    private Button saveButton;
+    //private Button saveButton;
     private VestigeDatabase entryDb;
     private int vestigeEntryId = DEFAULT_ENTRY_ID;
     private Date originalCreatedDate = new Date();
@@ -52,7 +54,7 @@ public class AddEntry extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_ENTRY_ID)) {
-            saveButton.setText(R.string.btn_update);
+           // saveButton.setText(R.string.btn_update);
             if (vestigeEntryId == DEFAULT_ENTRY_ID) {
                 // populate the UI
                 vestigeEntryId = intent.getIntExtra(EXTRA_ENTRY_ID, DEFAULT_ENTRY_ID);
@@ -70,6 +72,22 @@ public class AddEntry extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.note_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.note_update) {
+            saveButtonClicked();
+        }
+        //finish();
+        return true;
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
@@ -80,13 +98,13 @@ public class AddEntry extends AppCompatActivity {
     private void initViews(){
 
         textDescription = (EditText)findViewById(R.id.entry_description);
-        saveButton = findViewById(R.id.save_button);
+        /*saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveButtonClicked();
             }
-        });
+        });*/
         entryDb = VestigeDatabase.getInstance(getApplicationContext());
     }
 
@@ -108,7 +126,6 @@ public class AddEntry extends AppCompatActivity {
                    _entry.setCreatedOn(originalCreatedDate);
                    entryDb.vestigeDAO().updateEntry(_entry);
                }
-
 
                finish();
            }

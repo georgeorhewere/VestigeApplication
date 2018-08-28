@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VestigeApp</string>
+    <string name="app_name">Vestige Notes</string>
     <string name="vestigeListItem">Quick Note</string>
     <string name="vestigeStatusItemLabel">Status</string>
     <string name="rdb_important">Important</string>
@@ -11,4 +11,5 @@
     <string name="priority_sort">Priority</string>
     <string name="update_sort">Recent Update</string>
     <string name="default_sort">Default</string>
+    <string name="note_default_button">Save</string>
 </resources>

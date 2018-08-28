@@ -98,7 +98,6 @@ final private ItemClickListener vItemClickListener;
         @Override
         public void onClick(View v) {
             int elementId = dbEntries.get(getAdapterPosition()).getId();
-            Log.d("On Click ", "Clicked"+ elementId);
             vItemClickListener.onItemClickListener(elementId);
 
         }
@@ -117,9 +116,7 @@ final private ItemClickListener vItemClickListener;
                 colorCode = R.color.colorDefault;
                 break;
         }
-        Log.d("On Color ", "Color "+ colorCode);
         return colorCode;
-
     }
 
 public String getStatusText(int statusCode){
