@@ -85,7 +85,7 @@ private VestigeDatabase vestigeDb;
         vestigeDb= VestigeDatabase.getInstance(getApplicationContext());
         getJournalEntries(getEntriesByDefault());
         //Display toast for delete instructions
-        Toast.makeText(MainActivity.this, "Swipe to delete item!",Toast.LENGTH_LONG);
+        Toast.makeText(MainActivity.this, "Swipe to delete item!",Toast.LENGTH_LONG).show();
 
     }
 

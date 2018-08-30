@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.android.vestigeapp.database.VestigeDatabase;
 import com.example.android.vestigeapp.database.VestigeEntry;
@@ -109,28 +110,34 @@ public class AddEntry extends AppCompatActivity {
     }
 
     private void saveButtonClicked(){
-        String description = textDescription.getText().toString();
+        final String description = textDescription.getText().toString();
         int priority = getStatusFromRadioButton();
         Date entryDate = new Date();
+        if(description.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Enter a quick note", Toast.LENGTH_LONG).show();
 
-       final VestigeEntry _entry = new VestigeEntry(description,priority,entryDate,entryDate);
-       VestigeThreadExecutor.getInstance().diskIO().execute(new Runnable() {
-           @Override
-           public void run() {
-               if (vestigeEntryId == DEFAULT_ENTRY_ID) {
-                   // insert new entry
-                   entryDb.vestigeDAO().insertEntry(_entry);
-               } else {
-                   //update entry
-                   _entry.setId(vestigeEntryId);
-                   _entry.setCreatedOn(originalCreatedDate);
-                   entryDb.vestigeDAO().updateEntry(_entry);
-               }
+        }else {
+            final VestigeEntry _entry = new VestigeEntry(description, priority, entryDate, entryDate);
+            VestigeThreadExecutor.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
 
-               finish();
-           }
-       });
 
+                    if (vestigeEntryId == DEFAULT_ENTRY_ID) {
+                        // insert new entry
+                        entryDb.vestigeDAO().insertEntry(_entry);
+                    } else {
+                        //update entry
+                        _entry.setId(vestigeEntryId);
+                        _entry.setCreatedOn(originalCreatedDate);
+                        entryDb.vestigeDAO().updateEntry(_entry);
+                    }
+
+
+                    finish();
+                }
+            });
+        }
     }
 
 
