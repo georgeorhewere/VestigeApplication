@@ -6,8 +6,10 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SearchEvent;
@@ -45,6 +47,8 @@ public class AddEntry extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_add_entry);
         initViews();
         entryDb = VestigeDatabase.getInstance(getApplicationContext());
@@ -71,11 +75,13 @@ public class AddEntry extends AppCompatActivity {
 
             }
         }
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.note_menu, menu);
+
         return true;
     }
 
@@ -85,8 +91,11 @@ public class AddEntry extends AppCompatActivity {
 
         if(itemId == R.id.note_update) {
             saveButtonClicked();
+        }else if(itemId == android.R.id.home ){
+           // Log.d("Option Clicked", String.valueOf(itemId));
+          //  Log.d("Home Option", String.valueOf(android.R.id.home));
+            NavUtils.navigateUpFromSameTask(this);
         }
-        //finish();
         return true;
     }
 
